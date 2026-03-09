@@ -31,7 +31,7 @@ function App() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
           className="relative z-10 w-full"
         >
           {!showSurprise ? (
@@ -39,29 +39,45 @@ function App() {
               <Hero key="hero" onOpen={() => setShowSurprise(true)} />
             </AnimatePresence>
           ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-            >
-              <Suspense
-                fallback={
-                  <div className="min-h-screen bg-black flex items-center justify-center text-premium-rose animate-pulse">
-                    Loading memories...
-                  </div>
-                }
-              >
+            <div className="relative">
+              {/* Individual Suspense blocks for staggered hydration */}
+              <Suspense fallback={<SectionLoader text="Curating memories..." />}>
                 <Memories />
+              </Suspense>
+
+              <Suspense fallback={<SectionLoader text="Preparing your message..." />}>
                 <LoveMessage />
+              </Suspense>
+
+              <Suspense fallback={<SectionLoader text="Setting up celebration..." />}>
                 <Celebration />
+              </Suspense>
+
+              <Suspense fallback={<SectionLoader text="Finalizing..." />}>
                 <Ending />
               </Suspense>
-            </motion.div>
+            </div>
           )}
         </motion.div>
       )}
     </div>
   );
 }
+
+const SectionLoader = ({ text }) => (
+  <div className="h-64 flex flex-col items-center justify-center gap-4 bg-black/50 backdrop-blur-sm">
+    <div className="relative w-12 h-12">
+      <div className="absolute inset-0 border-2 border-premium-rose/20 rounded-full" />
+      <motion.div
+        className="absolute inset-0 border-2 border-t-premium-rose rounded-full"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+      />
+    </div>
+    <p className="font-sans text-xs uppercase tracking-widest text-premium-rose animate-pulse">
+      {text}
+    </p>
+  </div>
+);
 
 export default App;

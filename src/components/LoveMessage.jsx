@@ -164,7 +164,7 @@ const LoveMessage = () => {
                 className="flex flex-col items-center gap-4 mt-10"
               >
                 <div className="flex gap-4">
-                  {["💕", "🌹", "✨", "🌸", "💫"].map((e, i) => (
+                  {[].map((e, i) => (
                     <motion.span
                       key={i}
                       className="text-3xl"

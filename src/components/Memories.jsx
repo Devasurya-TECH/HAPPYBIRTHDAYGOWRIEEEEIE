@@ -68,18 +68,19 @@ const Memories = () => {
         {photos.map((photo, index) => (
           <motion.div
             key={index}
-            className="break-inside-avoid relative overflow-hidden rounded-2xl group cursor-pointer shadow-[0_10px_40px_rgba(0,0,0,0.5)] will-change-transform"
-            initial={{ opacity: 0, y: 60 }}
+            className="break-inside-avoid relative overflow-hidden rounded-2xl group cursor-pointer shadow-[0_10px_40px_rgba(0,0,0,0.5)] will-change-transform backface-hidden"
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            viewport={{ once: true, margin: "200px" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="relative w-full overflow-hidden block">
               <img
                 src={photo.src}
                 alt={photo.caption}
-                className="w-full h-auto object-cover transform transition-transform duration-[1200ms] group-hover:scale-110"
+                className="w-full h-auto object-cover transform transition-transform duration-[1200ms] group-hover:scale-110 will-change-transform"
                 loading="lazy"
+                decoding="async"
               />
 
               {/* Cinematic Overlay & Caption */}

@@ -29,10 +29,14 @@ const Hero = ({ onOpen }) => {
       {/* Cinematic Background with slow zoom */}
       <motion.div
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat will-change-transform"
-        style={{ backgroundImage: `url("${bgImage}")` }}
-        initial={{ scale: 1.3, opacity: 0 }}
-        animate={{ scale: 1.05, opacity: 1 }}
-        transition={{ duration: 3, ease: "easeOut" }}
+        style={{
+          backgroundImage: `url("${bgImage}")`,
+          backfaceVisibility: "hidden",
+        }}
+        initial={{ scale: 1.2, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 1.1, opacity: 0, filter: "blur(10px)" }}
+        transition={{ duration: 2.5, ease: [0.22, 1, 0.36, 1] }}
       />
 
       {/* Multi-layer overlays for depth */}
