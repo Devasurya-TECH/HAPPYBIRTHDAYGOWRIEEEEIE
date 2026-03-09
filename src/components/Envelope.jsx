@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import FloatingHearts from "./FloatingHearts";
 
-const Envelope = ({ onComplete }) => {
+const Envelope = ({ onStartMusic, onComplete }) => {
   const [step, setStep] = useState(0);
+  const [isOpened, setIsOpened] = useState(false);
   // Steps:
   // 0 = Initial state (Envelope closed, bouncing slightly)
   // 1 = Envelope opens (flap goes up)
@@ -11,35 +12,27 @@ const Envelope = ({ onComplete }) => {
   // 3 = Read letter (3 seconds)
   // 4 = Fade entire screen to reveal main site
 
-  useEffect(() => {
-    // Auto-sequence the intro
-    const timeouts = [];
+  const startSequence = () => {
+    if (isOpened) return;
+    setIsOpened(true);
+    onStartMusic(); // Trigger background music on user interaction
 
-    // Wait 1.5s then open flap
-    timeouts.push(setTimeout(() => setStep(1), 1500));
-
-    // Wait 2.2s then slide letter out
-    timeouts.push(setTimeout(() => setStep(2), 2200));
-
-    // Wait 3.5s then read letter
-    timeouts.push(setTimeout(() => setStep(3), 3500));
-
-    // Wait 6.5s then fade out everything
-    timeouts.push(setTimeout(() => setStep(4), 6500));
-
-    // Trigger parent callback after full sequence
-    timeouts.push(setTimeout(onComplete, 7500));
-
-    return () => timeouts.forEach(clearTimeout);
-  }, [onComplete]);
+    // Start sequencing
+    setTimeout(() => setStep(1), 500); // Wait 0.5s then open flap
+    setTimeout(() => setStep(2), 1200); // Wait 1.2s then slide letter out
+    setTimeout(() => setStep(3), 2500); // Wait 2.5s then read letter
+    setTimeout(() => setStep(4), 5500); // Wait 5.5s then fade out everything
+    setTimeout(onComplete, 6500); // Trigger parent callback after full sequence
+  };
 
   return (
     <AnimatePresence>
       {step < 4 && (
         <motion.div
-          className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-black"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-black cursor-pointer"
           exit={{ opacity: 0 }}
           transition={{ duration: 1, ease: "easeInOut" }}
+          onClick={startSequence}
         >
           <FloatingHearts />
 

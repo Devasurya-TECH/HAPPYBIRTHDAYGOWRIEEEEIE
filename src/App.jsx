@@ -9,21 +9,28 @@ const Memories = lazy(() => import("./components/Memories"));
 const LoveMessage = lazy(() => import("./components/LoveMessage"));
 const Celebration = lazy(() => import("./components/Celebration"));
 const Ending = lazy(() => import("./components/Ending"));
+import BackgroundMusic from "./components/BackgroundMusic";
 
 function App() {
   const [introFinished, setIntroFinished] = useState(false);
   const [showSurprise, setShowSurprise] = useState(false);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
 
   return (
     <div className="relative min-h-screen text-white bg-black">
       <div className="mesh-bg" />
 
-      {/* Always show hearts */}
+      {/* Always show hearts and background music */}
       <FloatingHearts />
+      <BackgroundMusic autoplay={isMusicPlaying} />
 
       <AnimatePresence mode="wait">
         {!introFinished && (
-          <Envelope key="envelope" onComplete={() => setIntroFinished(true)} />
+          <Envelope
+            key="envelope"
+            onStartMusic={() => setIsMusicPlaying(true)}
+            onComplete={() => setIntroFinished(true)}
+          />
         )}
       </AnimatePresence>
 
